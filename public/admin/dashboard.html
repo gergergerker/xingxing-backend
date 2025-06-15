@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>控制面板 - 晓视界后台管理系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-light: #81C784;
+            --primary-dark: #388E3C;
+            --secondary-color: #607D8B;
+            --info-color: #2196F3;
+            --warning-color: #FF9800;
+            --danger-color: #F44336;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.3s;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+        .logo h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .sidebar .nav {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .sidebar .nav-item {
+            margin: 5px 0;
+        }
+        .sidebar .nav-link {
+            color: #6c757d;
+            padding: 10px 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .sidebar .nav-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(76, 175, 80, 0.05);
+        }
+        .sidebar .nav-link.active {
+            color: var(--primary-color);
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left-color: var(--primary-color);
+            font-weight: 500;
+        }
+        .sidebar-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #6c757d;
+            transition: all 0.3s;
+        }
+        .sidebar-footer a:hover {
+            color: var(--primary-dark);
+        }
+        .sidebar-footer a i {
+            margin-right: 10px;
+        }
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 60px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            transition: all 0.3s;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+            transition: all 0.3s;
+        }
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6c757d;
+            display: none;
+        }
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .top-navbar {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .navbar-brand {
+                display: block !important;
+                margin-left: 15px;
+            }
+            .sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s;
+            }
+            .sidebar-backdrop.show {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            border-radius: 12px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .stats-card {
+            border-radius: 12px;
+            border: none;
+            overflow: hidden;
+        }
+        .stats-card .stats-icon {
+            font-size: 1.5rem;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="/public/晓视界logo.jpg" alt="晓视界Logo">
+                <h5>晓视界后台管理系统</h5>
+            </div>
+        </div>
+        
+        <ul class="nav flex-column mt-3">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/dashboard.html">
+                    <i class="bi bi-speedometer2"></i> 控制面板
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/pages/star.html">
+                    <i class="bi bi-star"></i> 星河页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/pages/observe.html">
+                    <i class="bi bi-telescope"></i> 观测页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/pages/sky.html">
+                    <i class="bi bi-moon-stars"></i> 星空页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/pages/explore.html">
+                    <i class="bi bi-compass"></i> 探索页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/pages/profile.html">
+                    <i class="bi bi-person-circle"></i> 个人中心
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/pages/settings.html">
+                    <i class="bi bi-gear"></i> 系统设置
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <a href="#" id="logout-btn">
+                <i class="bi bi-box-arrow-left"></i> 退出登录
+            </a>
+        </div>
+    </div>
+    
+    <!-- 顶部导航 -->
+    <div class="top-navbar">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        
+        <a class="navbar-brand d-none">
+            <img src="/public/晓视界logo.jpg" alt="晓视界" width="30" height="30" class="d-inline-block align-text-top me-2">
+            晓视界后台管理系统
+        </a>
+        
+        <ul class="navbar-nav ms-auto d-flex flex-row">
+            <li class="nav-item">
+                <span id="currentTime" class="me-3 text-muted"></span>
+            </li>
+            <li class="nav-item">
+                <span id="userInfo" class="fw-bold"></span>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <div class="welcome-banner">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2>欢迎使用晓视界后台管理系统</h2>
+                    <p class="mb-0">登录时间: <span id="loginTime"></span></p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-light" id="refreshStats">
+                        <i class="bi bi-arrow-clockwise me-2"></i>刷新数据
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="stats-icon" style="background-color: rgba(76, 175, 80, 0.1); color: var(--primary-color);">
+                                <i class="bi bi-people"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold" id="totalUsers">--</h5>
+                        <p class="text-muted mb-0">总用户数</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="stats-icon" style="background-color: rgba(33, 150, 243, 0.1); color: var(--info-color);">
+                                <i class="bi bi-person-badge"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold" id="memberCount">--</h5>
+                        <p class="text-muted mb-0">会员数量</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="stats-icon" style="background-color: rgba(255, 152, 0, 0.1); color: var(--warning-color);">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold" id="contentCount">--</h5>
+                        <p class="text-muted mb-0">内容总数</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="stats-icon" style="background-color: rgba(244, 67, 54, 0.1); color: var(--danger-color);">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold" id="conversionRate">--</h5>
+                        <p class="text-muted mb-0">会员转化率</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">系统状态</h5>
+            </div>
+            <div class="card-body">
+                <p>服务器地址: <code>http://localhost:3000</code></p>
+                <p>API 状态: <span id="apiStatus" class="badge bg-secondary">检查中...</span></p>
+                <p>数据库状态: <span id="dbStatus" class="badge bg-secondary">检查中...</span></p>
+                <p>管理员初始化: <span id="adminStatus" class="badge bg-secondary">检查中...</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查认证状态
+            checkAuth();
+            
+            // 设置当前时间
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // 记录登录时间
+            const loginTime = new Date().toLocaleString('zh-CN');
+            document.getElementById('loginTime').textContent = loginTime;
+            
+            // 侧边栏切换
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    document.querySelector('.sidebar').classList.toggle('show');
+                    
+                    // 创建或移除背景遮罩
+                    let backdrop = document.querySelector('.sidebar-backdrop');
+                    if (!backdrop) {
+                        backdrop = document.createElement('div');
+                        backdrop.className = 'sidebar-backdrop';
+                        document.body.appendChild(backdrop);
+                        
+                        backdrop.addEventListener('click', function() {
+                            document.querySelector('.sidebar').classList.remove('show');
+                            this.classList.remove('show');
+                        });
+                    }
+                    
+                    backdrop.classList.toggle('show');
+                });
+            }
+            
+            // 退出登录
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (confirm('确定要退出登录吗？')) {
+                    // 清除本地存储
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    
+                    // 跳转到登录页面
+                    window.location.href = '/admin';
+                }
+            });
+            
+            // 刷新数据
+            document.getElementById('refreshStats').addEventListener('click', function() {
+                loadDashboardStats();
+                checkSystemStatus();
+            });
+            
+            // 加载仪表盘数据
+            loadDashboardStats();
+            
+            // 检查系统状态
+            checkSystemStatus();
+        });
+        
+        // 检查认证状态
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            if (!token) {
+                window.location.href = '/admin';
+                return;
+            }
+            
+            // 显示用户信息
+            document.getElementById('userInfo').textContent = user.nickName || user.email || '管理员';
+            
+            // 验证Token
+            fetch('/api/auth/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('认证失败');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success || !['admin', 'superadmin'].includes(data.data.role)) {
+                    throw new Error('需要管理员权限');
+                }
+            })
+            .catch(error => {
+                console.error('认证错误:', error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/admin';
+            });
+        }
+        
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleString('zh-CN');
+        }
+        
+        // 加载仪表盘统计数据
+        function loadDashboardStats() {
+            const token = localStorage.getItem('token');
+            
+            fetch('/api/admin/dashboard', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const stats = data.data;
+                    document.getElementById('totalUsers').textContent = stats.userCount || 0;
+                    document.getElementById('memberCount').textContent = stats.memberCount || 0;
+                    document.getElementById('conversionRate').textContent = stats.memberRate || '0%';
+                    
+                    // 计算内容总数
+                    const contentTotal = Object.values(stats.contentStats || {}).reduce((sum, val) => sum + val, 0);
+                    document.getElementById('contentCount').textContent = contentTotal;
+                }
+            })
+            .catch(error => {
+                console.error('获取统计数据错误:', error);
+            });
+        }
+        
+        // 检查系统状态
+        function checkSystemStatus() {
+            // 检查API状态
+            fetch('/api')
+            .then(response => {
+                const apiStatus = document.getElementById('apiStatus');
+                if (response.ok) {
+                    apiStatus.textContent = '正常运行';
+                    apiStatus.className = 'badge bg-success';
+                } else {
+                    apiStatus.textContent = '异常';
+                    apiStatus.className = 'badge bg-danger';
+                }
+            })
+            .catch(() => {
+                const apiStatus = document.getElementById('apiStatus');
+                apiStatus.textContent = '无法连接';
+                apiStatus.className = 'badge bg-danger';
+            });
+            
+            // 检查数据库状态 (间接通过API)
+            fetch('/api/health')
+            .then(response => response.json())
+            .then(data => {
+                const dbStatus = document.getElementById('dbStatus');
+                if (data.success) {
+                    dbStatus.textContent = '已连接';
+                    dbStatus.className = 'badge bg-success';
+                } else {
+                    dbStatus.textContent = '连接失败';
+                    dbStatus.className = 'badge bg-danger';
+                }
+            })
+            .catch(() => {
+                const dbStatus = document.getElementById('dbStatus');
+                dbStatus.textContent = '无法确认';
+                dbStatus.className = 'badge bg-warning text-dark';
+            });
+            
+            // 检查管理员初始化状态
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            const adminStatus = document.getElementById('adminStatus');
+            if (user.role === 'superadmin') {
+                adminStatus.textContent = '已完成';
+                adminStatus.className = 'badge bg-success';
+            } else if (token) {
+                adminStatus.textContent = '管理员已登录';
+                adminStatus.className = 'badge bg-info';
+            } else {
+                adminStatus.textContent = '未初始化';
+                adminStatus.className = 'badge bg-warning text-dark';
+            }
+        }
+    </script>
+</body>
+</html> 

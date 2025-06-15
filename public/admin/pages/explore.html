@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>探索页面管理 - 晓视界管理系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        /* 确保侧边栏活动项目有明显的左侧边框线条 */
+        .sidebar .nav-link.active {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--primary-light) !important;
+            border-left: 3px solid var(--primary-color) !important;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="../images/logo.jpg" alt="晓视界Logo">
+                <h5>晓视界管理系统</h5>
+            </div>
+        </div>
+        
+        <ul class="nav flex-column mt-3">
+            <li class="nav-item">
+                <a class="nav-link" href="../index.html">
+                    控制面板
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="star.html">
+                    星河页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="observe.html">
+                    观测页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="sky.html">
+                    星空页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="explore.html">
+                    探索页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="profile.html">
+                    个人中心
+                </a>
+            </li>
+            <li class="nav-item admin-only">
+                <a class="nav-link" href="users.html">
+                    用户管理
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="settings.html">
+                    系统设置
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="text-light" id="logout-btn">
+                <i class="bi bi-box-arrow-left"></i> 退出登录
+            </a>
+        </div>
+    </div>
+    
+    <!-- 顶部导航 -->
+    <div class="top-navbar">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        
+        <a class="navbar-brand d-none" href="#">
+            <img src="../images/logo.jpg" alt="晓视界" width="30" height="30" class="d-inline-block align-text-top me-2">
+            晓视界管理系统
+        </a>
+        
+        <ul class="navbar-nav ms-auto d-flex flex-row">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        3
+                    </span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><h6 class="dropdown-header">通知中心</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">新用户注册 (2分钟前)</a></li>
+                    <li><a class="dropdown-item" href="#">系统更新完成 (1小时前)</a></li>
+                    <li><a class="dropdown-item" href="#">备份成功 (昨天)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-center" href="#">查看所有通知</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown ms-3">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="https://via.placeholder.com/36" class="rounded-circle me-2" width="36" alt="">
+                    <span id="current-user-name">管理员</span>
+                    <span class="badge bg-success ms-2 user-role" id="current-user-role">管理员</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>个人资料</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>账号设置</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" id="logout-link"><i class="bi bi-box-arrow-right me-2"></i>退出登录</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <h2>探索页面管理</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs custom-tabs" id="exploreTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="articles-tab" data-bs-toggle="tab" data-bs-target="#articles" type="button" role="tab">天文文章</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="videos-tab" data-bs-toggle="tab" data-bs-target="#videos" type="button" role="tab">宇宙小剧场</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content mt-3" id="exploreTabsContent">
+                    <!-- 天文文章管理 -->
+                    <div class="tab-pane fade show active" id="articles" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">天文文章管理</h5>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadArticleModal">
+                                    <i class="bi bi-file-earmark-plus"></i> 添加文章
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 d-flex justify-content-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="articleTypeFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-funnel"></i> 文章类型
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="articleTypeFilter">
+                                            <li><a class="dropdown-item" href="#">全部类型</a></li>
+                                            <li><a class="dropdown-item" href="#">天文时事</a></li>
+                                            <li><a class="dropdown-item" href="#">天文回顾</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>类型</th>
+                                                <th>标题</th>
+                                                <th>发布日期</th>
+                                                <th>标签</th>
+                                                <th>预览</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>天文时事</td>
+                                                <td>韦伯望远镜最新发现</td>
+                                                <td>2023-12-01</td>
+                                                <td><span class="badge bg-primary">望远镜</span> <span class="badge bg-info">深空</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewArticleModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-cloud-arrow-up"></i> 发布
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>天文回顾</td>
+                                                <td>哈勃望远镜30年成就回顾</td>
+                                                <td>2023-11-15</td>
+                                                <td><span class="badge bg-primary">望远镜</span> <span class="badge bg-success">历史</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewArticleModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-cloud-arrow-up"></i> 发布
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">下一页</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 宇宙小剧场管理 -->
+                    <div class="tab-pane fade" id="videos" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">宇宙小剧场管理</h5>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadVideoModal">
+                                    <i class="bi bi-film"></i> 添加视频
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>标题</th>
+                                                <th>发布日期</th>
+                                                <th>时长</th>
+                                                <th>预览</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>黑洞的形成</td>
+                                                <td>2023-12-01</td>
+                                                <td>04:00</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewVideoModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-cloud-arrow-up"></i> 发布
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>太阳系的诞生</td>
+                                                <td>2023-11-15</td>
+                                                <td>05:30</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewVideoModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-cloud-arrow-up"></i> 发布
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">下一页</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文章上传模态框 -->
+    <div class="modal fade" id="uploadArticleModal" tabindex="-1" aria-labelledby="uploadArticleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="uploadArticleModalLabel">发布天文文章</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="article-upload-form">
+                        <div class="mb-3">
+                            <label for="articleType" class="form-label">文章类型</label>
+                            <select class="form-select" id="articleType" required>
+                                <option value="">请选择文章类型</option>
+                                <option value="天文时事">天文时事</option>
+                                <option value="天文回顾">天文回顾</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="articleTitle" class="form-label">文章标题</label>
+                            <input type="text" class="form-control" id="articleTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="articleTags" class="form-label">文章标签</label>
+                            <input type="text" class="form-control" id="articleTags" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="articleCover" class="form-label">上传封面图片</label>
+                            <input type="file" class="form-control" id="articleCover" accept="image/*" required>
+                            <div class="preview-container cover-preview mt-2"></div>
+                        </div>
+                        
+                        <!-- 第一段文本内容 -->
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="articleContent1" class="form-label fw-bold text-primary">文章内容 (第一段)</label>
+                            <textarea class="form-control" id="articleContent1" rows="4" required placeholder="输入文章第一段内容"></textarea>
+                        </div>
+                        
+                        <!-- 第一张内容图片 -->
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="articleImage1" class="form-label fw-bold text-success">第一段后插入图片</label>
+                            <input type="file" class="form-control" id="articleImage1" accept="image/*" required>
+                            <div class="preview-container image1-preview mt-2"></div>
+                        </div>
+                        
+                        <!-- 第二段文本内容 -->
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="articleContent2" class="form-label fw-bold text-primary">文章内容 (第二段)</label>
+                            <textarea class="form-control" id="articleContent2" rows="4" required placeholder="输入文章第二段内容"></textarea>
+                        </div>
+                        
+                        <!-- 第二张内容图片 -->
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="articleImage2" class="form-label fw-bold text-success">第二段后插入图片</label>
+                            <input type="file" class="form-control" id="articleImage2" accept="image/*" required>
+                            <div class="preview-container image2-preview mt-2"></div>
+                        </div>
+                        
+                        <!-- 第三段文本内容 -->
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="articleContent3" class="form-label fw-bold text-primary">文章内容 (第三段)</label>
+                            <textarea class="form-control" id="articleContent3" rows="4" required placeholder="输入文章第三段内容"></textarea>
+                        </div>
+                        
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="articleAudio" class="form-label fw-bold text-info">上传朗读音频</label>
+                            <input type="file" class="form-control" id="articleAudio" accept="audio/*" required>
+                        </div>
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="articleA4" class="form-label fw-bold text-info">上传A4打印页面</label>
+                            <input type="file" class="form-control" id="articleA4" accept="application/pdf,image/*">
+                        </div>
+                        
+                        <!-- 发布日期选择器 -->
+                        <div class="mb-3 p-3 bg-info bg-opacity-10 border border-info rounded">
+                            <label for="publishDateTime" class="form-label fw-bold text-info">预定发布时间</label>
+                            <input type="datetime-local" class="form-control" id="publishDateTime">
+                            <div class="form-text">文章将在所选日期的凌晨5:00发布，留空则立即发布</div>
+                        </div>
+                        
+                        <!-- 单选题与思考 -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-danger">习题与思考（单选题）</label>
+                            
+                            <!-- 单选题1 -->
+                            <div class="border rounded p-3 mb-3 bg-light border-danger border-opacity-25">
+                                <div class="mb-3">
+                                    <label for="question1" class="form-label">问题1</label>
+                                    <input type="text" class="form-control" id="question1" placeholder="请输入问题" required>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer1" value="A" checked>
+                                        </div>
+                                        <span class="input-group-text">A</span>
+                                        <input type="text" class="form-control" placeholder="选项A" id="option1A" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer1" value="B">
+                                        </div>
+                                        <span class="input-group-text">B</span>
+                                        <input type="text" class="form-control" placeholder="选项B" id="option1B" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer1" value="C">
+                                        </div>
+                                        <span class="input-group-text">C</span>
+                                        <input type="text" class="form-control" placeholder="选项C" id="option1C" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer1" value="D">
+                                        </div>
+                                        <span class="input-group-text">D</span>
+                                        <input type="text" class="form-control" placeholder="选项D" id="option1D" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 单选题2 -->
+                            <div class="border rounded p-3 mb-3 bg-light border-danger border-opacity-25">
+                                <div class="mb-3">
+                                    <label for="question2" class="form-label">问题2</label>
+                                    <input type="text" class="form-control" id="question2" placeholder="请输入问题" required>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer2" value="A" checked>
+                                        </div>
+                                        <span class="input-group-text">A</span>
+                                        <input type="text" class="form-control" placeholder="选项A" id="option2A" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer2" value="B">
+                                        </div>
+                                        <span class="input-group-text">B</span>
+                                        <input type="text" class="form-control" placeholder="选项B" id="option2B" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer2" value="C">
+                                        </div>
+                                        <span class="input-group-text">C</span>
+                                        <input type="text" class="form-control" placeholder="选项C" id="option2C" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer2" value="D">
+                                        </div>
+                                        <span class="input-group-text">D</span>
+                                        <input type="text" class="form-control" placeholder="选项D" id="option2D" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 单选题3 -->
+                            <div class="border rounded p-3 mb-3 bg-light border-danger border-opacity-25">
+                                <div class="mb-3">
+                                    <label for="question3" class="form-label">问题3</label>
+                                    <input type="text" class="form-control" id="question3" placeholder="请输入问题" required>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer3" value="A" checked>
+                                        </div>
+                                        <span class="input-group-text">A</span>
+                                        <input type="text" class="form-control" placeholder="选项A" id="option3A" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer3" value="B">
+                                        </div>
+                                        <span class="input-group-text">B</span>
+                                        <input type="text" class="form-control" placeholder="选项B" id="option3B" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer3" value="C">
+                                        </div>
+                                        <span class="input-group-text">C</span>
+                                        <input type="text" class="form-control" placeholder="选项C" id="option3C" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer3" value="D">
+                                        </div>
+                                        <span class="input-group-text">D</span>
+                                        <input type="text" class="form-control" placeholder="选项D" id="option3D" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 单选题4 -->
+                            <div class="border rounded p-3 mb-3 bg-light border-danger border-opacity-25">
+                                <div class="mb-3">
+                                    <label for="question4" class="form-label">问题4</label>
+                                    <input type="text" class="form-control" id="question4" placeholder="请输入问题" required>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer4" value="A" checked>
+                                        </div>
+                                        <span class="input-group-text">A</span>
+                                        <input type="text" class="form-control" placeholder="选项A" id="option4A" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer4" value="B">
+                                        </div>
+                                        <span class="input-group-text">B</span>
+                                        <input type="text" class="form-control" placeholder="选项B" id="option4B" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer4" value="C">
+                                        </div>
+                                        <span class="input-group-text">C</span>
+                                        <input type="text" class="form-control" placeholder="选项C" id="option4C" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <input class="form-check-input mt-0" type="radio" name="correctAnswer4" value="D">
+                                        </div>
+                                        <span class="input-group-text">D</span>
+                                        <input type="text" class="form-control" placeholder="选项D" id="option4D" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 思考题 -->
+                            <div class="border rounded p-3 mb-3 bg-light border-danger border-opacity-25">
+                                <div class="mb-3">
+                                    <label for="thinkingQuestion" class="form-label">思考</label>
+                                    <textarea class="form-control" id="thinkingQuestion" rows="2" placeholder="请输入思考问题" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="publishArticleBtn">保存文章</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频上传模态框 -->
+    <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="uploadVideoModalLabel">上传宇宙小剧场视频</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="video-upload-form">
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="videoTitle" class="form-label fw-bold text-primary">视频标题</label>
+                            <input type="text" class="form-control" id="videoTitle" required>
+                        </div>
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="videoDescription" class="form-label fw-bold text-primary">视频描述</label>
+                            <textarea class="form-control" id="videoDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="videoFile" class="form-label fw-bold text-success">上传视频文件</label>
+                            <input type="file" class="form-control" id="videoFile" accept="video/*" required>
+                        </div>
+                        <div class="mb-3 p-3 bg-light border rounded">
+                            <label for="videoThumbnail" class="form-label fw-bold text-success">上传视频缩略图</label>
+                            <input type="file" class="form-control" id="videoThumbnail" accept="image/*" required>
+                        </div>
+                        <!-- 发布日期选择器 -->
+                        <div class="mb-3 p-3 bg-info bg-opacity-10 border border-info rounded">
+                            <label for="videoPublishDateTime" class="form-label fw-bold text-info">预定发布时间</label>
+                            <input type="datetime-local" class="form-control" id="videoPublishDateTime">
+                            <div class="form-text">视频将在所选日期的凌晨5:00发布，留空则立即发布</div>
+                        </div>
+                        <div class="preview-container"></div>
+                    </form>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="publishVideoBtn">保存视频</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文章预览模态框 -->
+    <div class="modal fade" id="previewArticleModal" tabindex="-1" aria-labelledby="previewArticleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="previewArticleModalLabel">文章预览</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="article-preview">
+                        <h3 class="article-title mb-3">韦伯望远镜最新发现</h3>
+                        <div class="article-meta mb-3">
+                            <span class="badge bg-primary">望远镜</span>
+                            <span class="badge bg-info">深空</span>
+                            <span class="text-muted ms-2">2023-12-01</span>
+                        </div>
+                        <img src="https://via.placeholder.com/800x400" alt="文章封面" class="img-fluid rounded mb-4">
+                        
+                        <!-- 第一段内容 -->
+                        <div class="article-content mb-4">
+                            <p>韦伯望远镜（James Webb Space Telescope）作为哈勃望远镜的继任者，自从2021年发射以来，一直在为人类揭示宇宙的奥秘。最近，科学家们通过韦伯望远镜的观测数据，发现了迄今为止最遥远的星系，这些星系形成于宇宙大爆炸后仅3亿年。这一发现挑战了我们对于早期宇宙形成的理解。</p>
+                        </div>
+                        
+                        <!-- 第一张内容图片 -->
+                        <img src="https://via.placeholder.com/800x400" alt="韦伯望远镜观测图像" class="img-fluid rounded mb-4">
+                        
+                        <!-- 第二段内容 -->
+                        <div class="article-content mb-4">
+                            <p>这些新发现的星系比科学家之前预计的更为明亮和复杂。传统理论认为早期宇宙中的星系应该较小且结构简单，但韦伯望远镜的观测显示，这些星系已经具有成熟的结构和活跃的恒星形成区域。这意味着星系演化过程可能比我们想象的更加迅速，或者宇宙大爆炸的时间点需要重新评估。</p>
+                        </div>
+                        
+                        <!-- 第二张内容图片 -->
+                        <img src="https://via.placeholder.com/800x400" alt="早期宇宙星系结构图" class="img-fluid rounded mb-4">
+                        
+                        <!-- 第三段内容 -->
+                        <div class="article-content mb-4">
+                            <p>科学家们计划继续利用韦伯望远镜的强大能力，进一步研究这些早期星系的化学成分和演化过程。通过了解宇宙最初几亿年的状态，我们有望解答关于宇宙起源和演化的根本问题，例如第一代恒星是何时以及如何形成的，以及这些早期天体如何影响了后来的宇宙结构。这一系列研究成果预计将在未来几年内持续发表，彻底改变我们对宇宙早期历史的认知。</p>
+                        </div>
+                        
+                        <div class="article-audio mt-4 mb-4">
+                            <h5>文章朗读</h5>
+                            <audio controls class="w-100">
+                                <source src="#" type="audio/mpeg">
+                                您的浏览器不支持音频播放
+                            </audio>
+                        </div>
+                        
+                        <div class="article-exercise mt-4">
+                            <h5>习题与思考</h5>
+                            
+                            <!-- 单选题1 -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <strong>问题1：</strong>韦伯望远镜与哈勃望远镜相比，具有哪些主要优势？
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1a">
+                                        <label class="form-check-label" for="q1a">
+                                            A. 体积更小，重量更轻
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1b" checked>
+                                        <label class="form-check-label" for="q1b">
+                                            B. 能够在更长的红外波长范围内工作，观测更远距离
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1c">
+                                        <label class="form-check-label" for="q1c">
+                                            C. 使用简单的光学技术，便于维护
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1d">
+                                        <label class="form-check-label" for="q1d">
+                                            D. 位于地球低轨道，便于宇航员维修
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 单选题2 -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <strong>问题2：</strong>根据文章，韦伯望远镜最近发现的最遥远星系形成于何时？
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2a" checked>
+                                        <label class="form-check-label" for="q2a">
+                                            A. 宇宙大爆炸后约3亿年
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2b">
+                                        <label class="form-check-label" for="q2b">
+                                            B. 宇宙大爆炸后约10亿年
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2c">
+                                        <label class="form-check-label" for="q2c">
+                                            C. 宇宙大爆炸后约30亿年
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2d">
+                                        <label class="form-check-label" for="q2d">
+                                            D. 宇宙大爆炸后约100亿年
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 单选题3 -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <strong>问题3：</strong>文章中提到的早期星系的特点是什么？
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3a">
+                                        <label class="form-check-label" for="q3a">
+                                            A. 体积小且暗淡
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3b">
+                                        <label class="form-check-label" for="q3b">
+                                            B. 没有恒星形成活动
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3c" checked>
+                                        <label class="form-check-label" for="q3c">
+                                            C. 比预期更明亮且结构更复杂
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3d">
+                                        <label class="form-check-label" for="q3d">
+                                            D. 完全由暗物质构成
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 单选题4 -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <strong>问题4：</strong>科学家们计划如何进一步研究这些早期星系？
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4a">
+                                        <label class="form-check-label" for="q4a">
+                                            A. 通过地面望远镜观测
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4b">
+                                        <label class="form-check-label" for="q4b">
+                                            B. 放弃研究，因为太过遥远
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4c">
+                                        <label class="form-check-label" for="q4c">
+                                            C. 等待下一代空间望远镜
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4d" checked>
+                                        <label class="form-check-label" for="q4d">
+                                            D. 继续使用韦伯望远镜研究它们的化学成分和演化过程
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 思考题 -->
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <strong>思考</strong>
+                                </div>
+                                <div class="card-body">
+                                    <p>如果宇宙大爆炸的时间点需要重新评估，这将如何影响现有的宇宙学理论？请结合文章内容进行思考。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <a href="#" class="btn btn-primary">
+                        <i class="bi bi-download"></i> 下载A4版本
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频预览模态框 -->
+    <div class="modal fade" id="previewVideoModal" tabindex="-1" aria-labelledby="previewVideoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="previewVideoModalLabel">视频预览</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="video-preview">
+                        <h4 class="video-title mb-3">黑洞的形成</h4>
+                        <div class="ratio ratio-16x9 mb-4">
+                            <video controls poster="../images/video-thumbnail.jpg">
+                                <source src="../assets/videos/demo-video.mp4" type="video/mp4">
+                                您的浏览器不支持视频标签
+                            </video>
+                        </div>
+                        <div class="video-info mb-4">
+                            <p class="text-muted">发布日期: 2023-12-01 | 时长: 04:00</p>
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <strong>视频简介</strong>
+                                </div>
+                                <div class="card-body">
+                                    <p>本视频详细讲解了黑洞的形成过程，从恒星坍缩到黑洞的诞生，以及黑洞的各种类型和特性。探索了科学家如何发现和研究黑洞，以及黑洞对周围时空的影响。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 通知容器 -->
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+    
+    <!-- 脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化管理员功能
+            initAdminFunctions();
+            
+            // 初始化用户角色和权限
+            initUserRoleAndPermissions();
+            
+            // 视频模态框显示前的处理
+            const previewVideoModal = document.getElementById('previewVideoModal');
+            if (previewVideoModal) {
+                previewVideoModal.addEventListener('show.bs.modal', function() {
+                    // 确保视频元素存在
+                    const videoElement = this.querySelector('video');
+                    if (videoElement) {
+                        // 重置视频源，避免自动加载远程资源
+                        const source = videoElement.querySelector('source');
+                        if (source && source.getAttribute('src').includes('webdemo.agora.io')) {
+                            source.setAttribute('src', '../assets/videos/demo-video.mp4');
+                            videoElement.load(); // 重新加载视频
+                        }
+                    }
+                });
+                
+                // 关闭模态框时暂停视频
+                previewVideoModal.addEventListener('hidden.bs.modal', function() {
+                    const videoElement = this.querySelector('video');
+                    if (videoElement) {
+                        videoElement.pause();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

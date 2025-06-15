@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星河页面管理 - 晓视界管理系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        /* 确保侧边栏活动项目有明显的左侧边框线条 */
+        .sidebar .nav-link.active {
+            background-color: rgba(76, 175, 80, 0.2) !important;
+            color: #80c883 !important;
+            border-left: 5px solid #4CAF50 !important;
+            font-weight: 600 !important;
+            padding-left: calc(1rem - 5px) !important;
+        }
+
+        /* 如果用户点击了观测页面，确保其样式正确 */
+        .sidebar .nav-item:nth-child(3) .nav-link:hover {
+            border-left: 5px solid #4CAF50 !important;
+            background-color: rgba(76, 175, 80, 0.2) !important;
+            color: #80c883 !important;
+            padding-left: calc(1rem - 5px) !important;
+            font-weight: 600 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="../images/logo.jpg" alt="晓视界Logo">
+                <h5>晓视界管理系统</h5>
+            </div>
+        </div>
+        
+        <ul class="nav flex-column mt-3">
+            <li class="nav-item">
+                <a class="nav-link" href="../index.html">
+                    控制面板
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="star.html">
+                    星河页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="observe.html">
+                    观测页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="sky.html">
+                    星空页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="explore.html">
+                    探索页面
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="profile.html">
+                    个人中心
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="settings.html">
+                    系统设置
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="text-light" id="logout-btn">
+                <i class="bi bi-box-arrow-left"></i> 退出登录
+            </a>
+        </div>
+    </div>
+    
+    <!-- 顶部导航 -->
+    <div class="top-navbar">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="bi bi-list"></i>
+        </button>
+        
+        <a class="navbar-brand d-none" href="#">
+            <img src="../images/logo.jpg" alt="晓视界" width="30" height="30" class="d-inline-block align-text-top me-2">
+            晓视界管理系统
+        </a>
+        
+        <ul class="navbar-nav ms-auto d-flex flex-row">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        3
+                    </span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><h6 class="dropdown-header">通知中心</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">新用户注册 (2分钟前)</a></li>
+                    <li><a class="dropdown-item" href="#">系统更新完成 (1小时前)</a></li>
+                    <li><a class="dropdown-item" href="#">备份成功 (昨天)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-center" href="#">查看所有通知</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown ms-3">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                    <img src="https://via.placeholder.com/36" class="rounded-circle me-2" width="36" alt="">
+                    <span>管理员</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>个人资料</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>账号设置</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" id="logout-link"><i class="bi bi-box-arrow-right me-2"></i>退出登录</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <h2>星河页面管理</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs custom-tabs" id="starTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="space-videos-tab" data-bs-toggle="tab" data-bs-target="#space-videos" type="button" role="tab">太空地图视频</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="a4-content-tab" data-bs-toggle="tab" data-bs-target="#a4-content" type="button" role="tab">宇宙知识A4页面</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content mt-3" id="starTabsContent">
+                    <!-- 太空地图视频管理 -->
+                    <div class="tab-pane fade show active" id="space-videos" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">太空地图视频管理</h5>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadVideoModal">
+                                    <i class="bi bi-cloud-upload"></i> 上传视频
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>视频类型</th>
+                                                <th>标题</th>
+                                                <th>时长</th>
+                                                <th>预览</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>宇宙</td>
+                                                <td>宇宙奥秘探索</td>
+                                                <td>02:30</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewVideoModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>星系</td>
+                                                <td>银河系探索</td>
+                                                <td>03:15</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewVideoModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>天体</td>
+                                                <td>太阳系天体介绍</td>
+                                                <td>04:20</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewVideoModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>地球</td>
+                                                <td>地球形成与演化</td>
+                                                <td>03:45</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewVideoModal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 宇宙知识A4页面管理 -->
+                    <div class="tab-pane fade" id="a4-content" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">宇宙知识A4页面管理</h5>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadA4Modal">
+                                    <i class="bi bi-cloud-upload"></i> 上传A4页面
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>分类</th>
+                                                <th>标题</th>
+                                                <th>预览</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>宇宙结构</td>
+                                                <td>宇宙结构与层次</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewA4Modal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>天体类型</td>
+                                                <td>恒星、行星与小天体</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewA4Modal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>能量与场</td>
+                                                <td>宇宙能量与场</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewA4Modal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>我们在哪</td>
+                                                <td>人类在宇宙中的位置</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#previewA4Modal">
+                                                        <i class="bi bi-eye"></i> 预览
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> 编辑
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger btn-delete-toggle">
+                                                        <i class="bi bi-trash"></i> 删除
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger d-none btn-delete-confirm">
+                                                        确认删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 上传视频模态框 -->
+        <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadVideoModalLabel">上传太空地图视频</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="video-upload-form">
+                            <div class="mb-3">
+                                <label for="videoType" class="form-label">视频类型</label>
+                                <select class="form-select" id="videoType" required>
+                                    <option value="">请选择视频类型</option>
+                                    <option value="宇宙">宇宙</option>
+                                    <option value="星系">星系</option>
+                                    <option value="天体">天体</option>
+                                    <option value="地球">地球</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="videoTitle" class="form-label">视频标题</label>
+                                <input type="text" class="form-control" id="videoTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="videoDuration" class="form-label">视频时长 (秒)</label>
+                                <input type="number" class="form-control" id="videoDuration" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="videoUpload" class="form-label">上传视频文件</label>
+                                <input type="file" class="form-control" id="videoUpload" accept="video/*" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="videoCover" class="form-label">上传视频封面</label>
+                                <input type="file" class="form-control" id="videoCover" accept="image/*" required>
+                            </div>
+                            <div class="preview-container"></div>
+                            <button type="submit" class="btn btn-primary mt-3">上传视频</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 上传A4页面模态框 -->
+        <div class="modal fade" id="uploadA4Modal" tabindex="-1" aria-labelledby="uploadA4ModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadA4ModalLabel">上传A4页面</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="a4-upload-form">
+                            <div class="mb-3">
+                                <label for="a4Category" class="form-label">A4页面分类</label>
+                                <select class="form-select" id="a4Category" required>
+                                    <option value="">请选择分类</option>
+                                    <option value="宇宙结构">宇宙结构</option>
+                                    <option value="天体类型">天体类型</option>
+                                    <option value="能量与场">能量与场</option>
+                                    <option value="我们在哪">我们在哪</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="a4Title" class="form-label">标题</label>
+                                <input type="text" class="form-control" id="a4Title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="a4Description" class="form-label">内容描述</label>
+                                <textarea class="form-control" id="a4Description" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="a4Image" class="form-label">上传A4页面图片</label>
+                                <input type="file" class="form-control" id="a4Image" accept="image/*" required>
+                            </div>
+                            <div class="preview-container"></div>
+                            <button type="submit" class="btn btn-primary mt-3">上传A4页面</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 视频预览模态框 -->
+        <div class="modal fade" id="previewVideoModal" tabindex="-1" aria-labelledby="previewVideoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="previewVideoModalLabel">视频预览</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls width="100%" class="mb-3"></video>
+                        <h5>宇宙奥秘探索</h5>
+                        <p>视频类型：宇宙</p>
+                        <p>时长：02:30</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- A4页面预览模态框 -->
+        <div class="modal fade" id="previewA4Modal" tabindex="-1" aria-labelledby="previewA4ModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="previewA4ModalLabel">A4页面预览</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="https://via.placeholder.com/595x842" alt="A4页面预览" class="img-fluid mb-3">
+                        <h5>宇宙结构与层次</h5>
+                        <p>分类：宇宙结构</p>
+                        <p>描述：本页面介绍宇宙的基本结构和层次，包括从最小的粒子到最大的星系团。</p>
+                        <button class="btn btn-primary mt-2">
+                            <i class="bi bi-download"></i> 下载PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 视频预览模态框事件处理
+            const videoPreviewModal = document.getElementById('videoPreviewModal');
+            if (videoPreviewModal) {
+                videoPreviewModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const videoTitle = button.getAttribute('data-video-title');
+                    const videoSrc = `../assets/videos/sample-${button.getAttribute('data-video-id')}.mp4`;
+                    
+                    const modalTitle = this.querySelector('.modal-title');
+                    const videoPlayer = this.querySelector('#videoPlayer');
+                    
+                    if (modalTitle) modalTitle.textContent = videoTitle;
+                    if (videoPlayer) {
+                        const source = videoPlayer.querySelector('source');
+                        if (source) {
+                            source.src = videoSrc;
+                            videoPlayer.load();
+                        }
+                    }
+                });
+                
+                // 关闭模态框时暂停视频
+                videoPreviewModal.addEventListener('hidden.bs.modal', function () {
+                    const videoPlayer = this.querySelector('#videoPlayer');
+                    if (videoPlayer) videoPlayer.pause();
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
